@@ -15,4 +15,4 @@ def client(app):
 @pytest.fixture
 def db(app):
     with app.app_context():
-        yield app.extensions['sqlalchemy'].db
+        yield app.extensions['sqlalchemy']

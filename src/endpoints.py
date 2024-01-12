@@ -1,10 +1,11 @@
 from http import HTTPStatus
-from flask import Blueprint, jsonify
+from flask import Blueprint
 from src.extensions import db
 from webargs import fields
 from webargs.flaskparser import use_args
+from sqlalchemy import or_, and_
 
-from src.models import Appointment, DayOfWeek, Schedule
+from src.models import Appointment, DayOfWeek, Doctor, Schedule
 
 appts = Blueprint('/', __name__)
 
@@ -17,6 +18,8 @@ def create_appointment(args):
     
     if doctor_id is None:
         return {'error': 'Doctor ID is required'}, HTTPStatus.BAD_REQUEST
+    if db.session.query(Doctor).filter(Doctor.id == doctor_id).count() == 0:
+        return {'error': 'Doctor not found'}, HTTPStatus.NOT_FOUND
     if start is None or end is None:
         return {'error': 'Start and end times are required'}, HTTPStatus.BAD_REQUEST
     if start >= end:
@@ -45,6 +48,15 @@ def get_appointments(args):
     start = args.get('start')
     end = args.get('end')
 
-    appointments = db.session.scalars(db.select(Appointment).filter(Appointment.doctor_id == doctor_id, Appointment.end_time >= start.time(), Appointment.start_time <= end.time())).all()
+    if doctor_id is None:
+        return {'error': 'Doctor ID is required'}, HTTPStatus.BAD_REQUEST
+    if db.session.query(Doctor).filter(Doctor.id == doctor_id).count() == 0:
+        return {'error': 'Doctor not found'}, HTTPStatus.NOT_FOUND
+    if start is None or end is None:
+        return {'error': 'Start and end times are required'}, HTTPStatus.BAD_REQUEST
+    if start >= end:
+        return {'error': 'Invalid start and end times'}, HTTPStatus.BAD_REQUEST
+
+    appointments = db.session.scalars(db.select(Appointment).filter(Appointment.doctor_id == doctor_id, Appointment.end_time >= start, Appointment.start_time <= end)).all()
 
     return {'data': [appointment.serialize() for appointment in appointments]}
