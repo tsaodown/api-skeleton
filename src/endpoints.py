@@ -37,3 +37,14 @@ def create_appointment(args):
     db.session.commit()
 
     return {'data': appointment.serialize()}
+
+@home.route('/appts', methods=['GET'])
+@use_args({'doctor_id': fields.Int(), 'start': fields.DateTime(), 'end': fields.DateTime()}, location='query')
+def get_appointments(args):
+    doctor_id = args.get('doctor_id')
+    start = args.get('start')
+    end = args.get('end')
+
+    appointments = db.session.scalars(db.select(Appointment).filter(Appointment.doctor_id == doctor_id, Appointment.end_time >= start.time(), Appointment.start_time <= end.time())).all()
+
+    return {'data': [appointment.serialize() for appointment in appointments]}
