@@ -32,7 +32,7 @@ def create_appointment(args):
     if (existing_appointments is not None and existing_appointments > 0):
         return {'error': 'Doctor not available'}, HTTPStatus.NOT_FOUND
     
-    appointment = Appointment(doctor_id=args.get('doctor_id'), start_time=start.time(), end_time=end.time())
+    appointment = Appointment(doctor_id=args.get('doctor_id'), start_time=start, end_time=end)
     db.session.add(appointment)
     db.session.commit()
 

@@ -50,16 +50,16 @@ class Schedule(Base):
 
 class Appointment(Base):
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
-    start_time = db.Column(db.Time, nullable=False)
-    end_time = db.Column(db.Time, nullable=False)
+    start_time = db.Column(db.DateTime, nullable=False)
+    end_time = db.Column(db.DateTime, nullable=False)
 
     def serialize(self):
         return {
             'id': self.id,
             'doctor': self.doctor.serialize(),
-            'start_time': self.start_time.strftime('%H:%M'),
-            'end_time': self.end_time.strftime('%H:%M')
+            'start_time': self.start_time.strftime('%Y-%m-%dT%H:%M:%S'),
+            'end_time': self.end_time.strftime('%Y-%m-%dT%H:%M:%S')
         }
     
     def __repr__(self):
-        return f'<Appointment {self.doctor_id} {self.start_time.strftime("%H:%M")} - {self.end_time.strftime("%H:%M")}>'
+        return f'<Appointment {self.doctor_id} {self.start_time.strftime("%Y-%m-%dT%H:%M:%S")} - {self.end_time.strftime("%Y-%m-%dT%H:%M:%S")}>'
