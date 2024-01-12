@@ -1,7 +1,7 @@
 from datetime import time
 from flask import Flask
 from src.extensions import db
-from src.endpoints import home
+from src.endpoints import appts
 from src.models import DayOfWeek, Doctor, Schedule
 
 
@@ -32,5 +32,5 @@ def create_app():
         
         db.session.commit()
 
-    app.register_blueprint(home)
+    app.register_blueprint(appts, url_prefix='/appts')
     return app

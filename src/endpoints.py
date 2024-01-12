@@ -6,9 +6,9 @@ from webargs.flaskparser import use_args
 
 from src.models import Appointment, DayOfWeek, Schedule
 
-home = Blueprint('/', __name__)
+appts = Blueprint('/', __name__)
 
-@home.route('/appts/create', methods=['POST'])
+@appts.route('/create', methods=['POST'])
 @use_args({'doctor_id': fields.Int(), 'start': fields.DateTime(), 'end': fields.DateTime()}, location='query')
 def create_appointment(args):
     doctor_id = args.get('doctor_id')
@@ -38,7 +38,7 @@ def create_appointment(args):
 
     return {'data': appointment.serialize()}
 
-@home.route('/appts', methods=['GET'])
+@appts.route('/', methods=['GET'])
 @use_args({'doctor_id': fields.Int(), 'start': fields.DateTime(), 'end': fields.DateTime()}, location='query')
 def get_appointments(args):
     doctor_id = args.get('doctor_id')
