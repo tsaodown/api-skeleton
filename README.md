@@ -1,6 +1,6 @@
 ## Notes
 
-Hey there, nice to async meet y'all! This was my first time using Flask and the first time I've touched Python in a while. I got through appt creation and fetching all appointments in time. I was a little stuck on getting the first available appointment, but I got it - albeit about 30 minutes late. Following the honor code ¯\\_(ツ)_/¯
+Hey there, nice to async meet y'all! This was my first time using Flask and the first time I've touched Python in a while. I got through appt creation and fetching all appointments in time. I was a little stuck on getting the first available appointment, but I got it - albeit about 30 minutes late. Following the honor code ¯\\\_(ツ)\_/¯
 
 ## Setup
 
