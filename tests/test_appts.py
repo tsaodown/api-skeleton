@@ -14,6 +14,16 @@ def data_appointment_doc_2_appt_1(db):
   db.session.add(Appointment(doctor_id=2, start_time=datetime.fromisoformat('2021-01-01T09:00:00'), end_time=datetime.fromisoformat('2021-01-01T10:00:00')))
   db.session.commit()
 
+@pytest.fixture
+def data_appointment_doc_1_appt_2(db):
+  db.session.add(Appointment(doctor_id=1, start_time=datetime.fromisoformat('2024-01-11T16:00:00'), end_time=datetime.fromisoformat('2024-01-11T17:00:00')))
+  db.session.commit()
+
+@pytest.fixture
+def data_appointment_doc_1_appt_3(db):
+  db.session.add(Appointment(doctor_id=1, start_time=datetime.fromisoformat('2024-01-12T16:00:00'), end_time=datetime.fromisoformat('2024-01-12T17:00:00')))
+  db.session.commit()
+
 def test_create_appointment_happy_path(client):
   res = client.post('/appts/create', query_string={
     'doctor_id': 1,
@@ -150,3 +160,52 @@ def test_get_appointments_invalid_start_end(client):
 
   assert res.status_code == HTTPStatus.BAD_REQUEST
   assert res.json.get('error') == 'Invalid start and end times'
+
+def test_first_available_happy_path_at_start(client):
+  res = client.get('/appts/first_available', query_string={
+    'start': '2021-01-01T09:00:00'
+  })
+
+  assert res.status_code == HTTPStatus.OK
+  assert res.json.get('data').get('doctor').get('id') == 1
+  assert res.json.get('data').get('time') == '2021-01-01T09:00:00'
+
+@pytest.mark.usefixtures('data_appointment_doc_1_appt_1', 'data_appointment_doc_2_appt_1')
+def test_first_available_happy_path_start_occupied(client):
+  res = client.get('/appts/first_available', query_string={
+    'start': '2021-01-01T09:00:00'
+  })
+
+  assert res.status_code == HTTPStatus.OK
+  assert res.json.get('data').get('doctor').get('id') == 1
+  assert res.json.get('data').get('time') == '2021-01-01T10:00:00'
+
+@pytest.mark.usefixtures('data_appointment_doc_1_appt_2')
+def test_first_available_happy_path_next_day(client):
+  res = client.get('/appts/first_available', query_string={
+    'start': '2024-01-11T16:30:00'
+  })
+
+  assert res.status_code == HTTPStatus.OK
+  assert res.json.get('data').get('doctor').get('id') == 2
+  assert res.json.get('data').get('time') == '2024-01-12T08:00:00'
+
+@pytest.mark.usefixtures('data_appointment_doc_1_appt_3')
+def test_first_available_happy_path_over_weekend(client):
+  res = client.get('/appts/first_available', query_string={
+    'start': '2024-01-12T16:30:00'
+  })
+
+  assert res.status_code == HTTPStatus.OK
+  assert res.json.get('data').get('doctor').get('id') == 2
+  assert res.json.get('data').get('time') == '2024-01-15T08:00:00'
+
+@pytest.mark.usefixtures('data_appointment_doc_1_appt_1')
+def test_first_available_happy_path_doctor_2(client):
+  res = client.get('/appts/first_available', query_string={
+    'start': '2021-01-01T09:00:00'
+  })
+
+  assert res.status_code == HTTPStatus.OK
+  assert res.json.get('data').get('doctor').get('id') == 2
+  assert res.json.get('data').get('time') == '2021-01-01T09:00:00'
