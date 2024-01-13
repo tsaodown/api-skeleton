@@ -209,3 +209,11 @@ def test_first_available_happy_path_doctor_2(client):
   assert res.status_code == HTTPStatus.OK
   assert res.json.get('data').get('doctor').get('id') == 2
   assert res.json.get('data').get('time') == '2021-01-01T09:00:00'
+
+  def test_first_available_invalid_start(client):
+    res = client.get('/appts/first_available', query_string={
+      'start': '2021-01-01T08:00:00'
+    })
+
+    assert res.status_code == HTTPStatus.BAD_REQUEST
+    assert res.json.get('error') == 'Invalid start time'

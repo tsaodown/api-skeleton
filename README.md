@@ -2,6 +2,13 @@
 
 Hey there, nice to async meet y'all! This was my first time using Flask and the first time I've touched Python in a while. I got through appt creation and fetching all appointments in time. I was a little stuck on getting the first available appointment, but I got it - albeit about 30 minutes late. Following the honor code ¯\\\_(ツ)\_/¯
 
+Improvements:
+
+- Would like to dockerize the setup & configure real DB persistence
+- I guess if the doctors were booked out for months then `/appts/first_available` could run for a long time
+
+Configurations have been included to debug the app via the VSCode debugger & to run the test suite. Otherwise, the app runs with the default instructions below.
+
 ## Setup
 
 1. After cloning this repository, cd into it.
