@@ -15,21 +15,31 @@ def create_app():
         db.create_all()
 
         strange = Doctor(first_name='Stephen', last_name='Strange')
-        strange.schedules.append(Schedule(day_of_week=DayOfWeek.MON, start_time=time(hour=9), end_time=time(hour=17)))
-        strange.schedules.append(Schedule(day_of_week=DayOfWeek.TUE, start_time=time(hour=9), end_time=time(hour=17)))
-        strange.schedules.append(Schedule(day_of_week=DayOfWeek.WED, start_time=time(hour=9), end_time=time(hour=17)))
-        strange.schedules.append(Schedule(day_of_week=DayOfWeek.THU, start_time=time(hour=9), end_time=time(hour=17)))
-        strange.schedules.append(Schedule(day_of_week=DayOfWeek.FRI, start_time=time(hour=9), end_time=time(hour=17)))
+        strange.schedules.append(Schedule(
+            day_of_week=DayOfWeek.MON, start_time=time(hour=9), end_time=time(hour=17)))
+        strange.schedules.append(Schedule(
+            day_of_week=DayOfWeek.TUE, start_time=time(hour=9), end_time=time(hour=17)))
+        strange.schedules.append(Schedule(
+            day_of_week=DayOfWeek.WED, start_time=time(hour=9), end_time=time(hour=17)))
+        strange.schedules.append(Schedule(
+            day_of_week=DayOfWeek.THU, start_time=time(hour=9), end_time=time(hour=17)))
+        strange.schedules.append(Schedule(
+            day_of_week=DayOfWeek.FRI, start_time=time(hour=9), end_time=time(hour=17)))
         db.session.add(strange)
 
         who = Doctor(first_name='Doctor', last_name='Who')
-        who.schedules.append(Schedule(day_of_week=DayOfWeek.MON, start_time=time(hour=8), end_time=time(hour=16)))
-        who.schedules.append(Schedule(day_of_week=DayOfWeek.TUE, start_time=time(hour=8), end_time=time(hour=16)))
-        who.schedules.append(Schedule(day_of_week=DayOfWeek.WED, start_time=time(hour=8), end_time=time(hour=16)))
-        who.schedules.append(Schedule(day_of_week=DayOfWeek.THU, start_time=time(hour=8), end_time=time(hour=16)))
-        who.schedules.append(Schedule(day_of_week=DayOfWeek.FRI, start_time=time(hour=8), end_time=time(hour=16)))
+        who.schedules.append(Schedule(
+            day_of_week=DayOfWeek.MON, start_time=time(hour=8), end_time=time(hour=16)))
+        who.schedules.append(Schedule(
+            day_of_week=DayOfWeek.TUE, start_time=time(hour=8), end_time=time(hour=16)))
+        who.schedules.append(Schedule(
+            day_of_week=DayOfWeek.WED, start_time=time(hour=8), end_time=time(hour=16)))
+        who.schedules.append(Schedule(
+            day_of_week=DayOfWeek.THU, start_time=time(hour=8), end_time=time(hour=16)))
+        who.schedules.append(Schedule(
+            day_of_week=DayOfWeek.FRI, start_time=time(hour=8), end_time=time(hour=16)))
         db.session.add(who)
-        
+
         db.session.commit()
 
     app.register_blueprint(appts, url_prefix='/appts')
