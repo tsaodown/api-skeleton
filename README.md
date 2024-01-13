@@ -1,13 +1,6 @@
 ## Notes
 
-Hey there, nice to async meet y'all! This was my first time using Flask and the first time I've touched Python in a while. I got through appt creation and fetching all appointments. I've been kind of stuck on getting the first available appointment, so I wanted to walk through my thinking here:
-
-1. Find doctors scheduled at time
-2. If there are no doctors scheduled, set time to 8am next day, & goto 1
-3. Get appointments of doctors scheduled at time
-4. If there are any doctors without an appointment, return that doctor
-5. Set time to end of soonest ending appointment
-6. Goto 1
+Hey there, nice to async meet y'all! This was my first time using Flask and the first time I've touched Python in a while. I got through appt creation and fetching all appointments in time. I was a little stuck on getting the first available appointment, but I got it - albeit about 30 minutes late. Following the honor code ¯\\_(ツ)_/¯
 
 ## Setup
 
